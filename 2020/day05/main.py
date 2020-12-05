@@ -1,0 +1,52 @@
+def get_values_from_file(filename):
+    values = []
+
+    with open(filename) as file:
+        values = file.read().splitlines()
+
+    return values
+
+
+def get_row(seat_code):
+    # Only get first 7 characters
+    row_chars = seat_code[0:7]
+
+    # Convert to binary string
+    binary = row_chars.replace("F", "0").replace("B", "1")
+
+    return int(binary, 2)
+
+
+def get_column(seat_code):
+    # Only get last 3 characters
+    col_chars = seat_code[7:10]
+
+    # Convert to binary string
+    binary = col_chars.replace("R", "1").replace("L", "0")
+
+    return int(binary, 2)
+
+
+def get_highest_seat_id():
+    seat_list = (get_values_from_file("input.txt"))
+
+    highest_seat_id = 0
+    for seat in seat_list:
+        row_num = get_row(seat)
+        col_num = get_column(seat)
+
+        seat_id = row_num * 8 + col_num
+
+        if seat_id > highest_seat_id:
+            highest_seat_id = seat_id
+
+    return highest_seat_id
+
+
+def main():
+    highest_seat_id = get_highest_seat_id()
+    print(f'Highest seat ID: {highest_seat_id}')
+
+
+if __name__ == "__main__":
+    main()
